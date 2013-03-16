@@ -1,0 +1,18 @@
+.left-column {
+  display:none;
+}
+.content {
+  padding-left:0px;
+}
+table {
+  border-collapse:collapse;
+}
+table td, table th {
+  border:1px solid silver;
+  padding:4px 5px;
+  white-space-collapse:collapse;
+}
+table th {
+  background-color:#333;
+  color:white;
+}

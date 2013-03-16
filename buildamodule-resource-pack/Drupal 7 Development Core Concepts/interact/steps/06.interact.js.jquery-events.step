@@ -1,0 +1,79 @@
+(function ($) {
+  $(document).ready(function () {
+
+
+    // SELECTORS
+    // See http://api.jquery.com/category/selectors/ for all selectors.
+
+    var content = '';
+
+    // Using IDs.
+    //content = $('h1#site-name').html();
+
+    // Using classes.
+    //content = $('a.active').html();
+
+    // Using nested elements.
+    //content = $('h1 span').html();
+
+    // Using an attribute.
+    //content = $('input[type=text]').val();
+
+    // Looking for the presence of a word.
+    //content = $('p:contains("pneum")').html();
+
+    // Chaining selectors, similar to nesting.
+    //content = $('h1').find('span').html();
+
+    //alert(content);
+
+
+
+    // MANIPULATION
+    // See http://api.jquery.com/category/manipulation/ for all manipulation methods.
+
+    // Change the title.
+    //$('h1 span').text('This is the new title');
+
+    // Adding content to multiple elements.
+    //$('p').prepend('<strong>This is added to every paragraph tag.</strong>');
+
+    // Most methods also work as selectors.
+    //var new_h1 = $('p:first').html();
+    //$('h1 span').html(new_h1);
+
+    // Setting attributes and using a loop.
+    //$('li.first a').each(function () {
+    //  if ($(this).attr('rel') == 'tag') {
+    //    $(this).attr('href', 'http://example.com').text('CHANGED LINK');
+    //  }
+    //});
+
+
+
+    // EVENTS
+    // See http://api.jquery.com/category/events/ for all events.
+
+    // The click event.
+    $('p').click(function () {
+      alert('You just clicked on a paragraph');
+    });
+
+    // Using the 'this' variable in an event.
+    $('.form-text').keyup(function () {
+      var val = $(this).val();
+      $('h1 span').html(val);
+    });
+
+    // Two parameters for hover(), as well as hide and show.
+    $('a:contains("Log out")').hover(
+      function () {
+        $('.region-content').hide();
+      },
+      function () {
+        $('.region-content').show();
+      }
+    );
+
+  });
+})(jQuery);

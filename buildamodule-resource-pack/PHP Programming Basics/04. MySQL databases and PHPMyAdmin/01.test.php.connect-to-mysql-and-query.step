@@ -1,0 +1,35 @@
+<?php
+
+// Replace with the username and password you used for PhpMyAdmin.
+$server = 'localhost';
+$username = 'root';
+$password = 'test';
+$database = 'my_database';
+
+// Let's connect!
+$connection = mysql_connect($server, $username, $password);
+
+// If we can't connect, we should print out the error:
+if (!$connection) {
+  die('<strong>You were not able to connect to your database because ' . mysql_error() . '</strong>');
+}
+
+// To start querying, we need to select a database.
+mysql_select_db($database);
+
+// And let's do our first query.
+$result = mysql_query("SELECT * FROM people");
+//$result = mysql_query("SELECT name, shoe_size FROM people WHERE shoe_size > 8");
+//$result = mysql_query("SELECT * FROM people WHERE shoe_size > 8 AND name LIKE '%ee%'");
+//$result = mysql_query("SELECT name FROM people ORDER BY name ASC");
+
+// Use mysql_fetch_array to pull each row into an array.
+$output = '';
+while ($row = mysql_fetch_array($result)) {
+  foreach ($row as $key => $val) {
+    $output .= $key . ' = ' . $val . '<br />';
+  }
+  $output .= '<br />';
+}
+
+print $output;

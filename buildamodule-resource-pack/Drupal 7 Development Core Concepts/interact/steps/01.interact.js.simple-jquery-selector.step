@@ -1,0 +1,4 @@
+// Our first use of the jQuery object. It won't display anything
+// because the page content isn't loaded yet.
+var text = jQuery('h1').text();
+alert(text);

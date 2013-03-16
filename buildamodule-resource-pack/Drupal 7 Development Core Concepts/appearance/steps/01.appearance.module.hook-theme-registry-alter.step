@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * @file
+ * Demonstrate working with the theme layer.
+ */
+
+/**
+ * Implements hook_theme_registry_alter().
+ */
+function appearance_theme_registry_alter(&$theme_registry) {
+  return;
+}

@@ -1,0 +1,9 @@
+.authenticated-user #block-system-powered-by {
+  display:none;
+}
+/*
+This may need to be replaced with the following in newer version of Drupal:
+.body-authenticated #block-system-powered-by {
+  display:none;
+}
+*/

@@ -1,0 +1,6 @@
+; $Id$
+name = Interact
+description = "Examples of using JavaScript, jQuery and Drupal's JavaScript libraries."
+package = Build a Module
+core = 7.x
+scripts[] = interact.js

@@ -1,0 +1,53 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ * Stores and displays a trail of previously visited pages.
+ *
+ * Step 2: Adding functional code to hook_init() to store trail info.
+ * 
+ */
+
+
+/**
+ * Implements hook_init().
+ */
+function trails_init() {
+  // Grab the trail history from a variable
+  $trail = variable_get('trails_history', array());
+
+  // Add current page to trail.
+  $trail[] = array(
+    'title' => strip_tags(drupal_get_title()),
+    'path' => $_GET['q'],
+    'timestamp' => REQUEST_TIME,
+  );
+
+  // Save the trail as a variable
+  variable_set('trails_history', $trail);
+}
+
+
+/**
+ * Implements hook_permission().
+ */
+function trails_permission() {
+  return;
+}
+
+
+/**
+ * Implements hook_menu().
+ */
+function trails_menu() {
+  return;
+}
+
+
+/**
+ * Implements hook_cron().
+ */
+function trails_cron() {
+  return;
+}

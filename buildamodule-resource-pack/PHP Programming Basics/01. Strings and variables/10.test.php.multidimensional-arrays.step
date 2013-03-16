@@ -1,0 +1,39 @@
+<?php
+
+// Arrays can hold arrays, those can hold arrays, and so on.
+$my_array = array(
+  'George' => array(
+    'birthyear' => 1972,
+    'fav_band' => 'The Cure',
+    'shoe_size' => 10,
+  ),
+  'Sally' => array(
+    'birthyear' => 1975,
+    'fav_band' => 'Coldplay',
+    'shoe_size' => 8,
+  ),
+  'Deepak' => array(
+    'birthyear' => 1969,
+    'fav_band' => 'Beach Boys',
+    'shoe_size' => 10,
+  ),
+);
+
+// Adding an item to a multidimensional array.
+$my_array['Lucy'] = array(
+  'birthyear' => 1984,
+  'fav_band' => 'The Beatles',
+  'shoe_size' => 9,
+);
+
+// 1. Referencing a value inside of a multi-dimensional array.
+//print $my_array['Sally']['fav_band'] . '<br />';
+//print $my_array['Deepak']['shoe_size'] . '<br />';
+
+// 2. We can var_dump an array within the array.
+//var_dump($my_array['Lucy']);
+
+// L3. et's dump the whole array variable.
+//var_dump($my_array);
+
+?>

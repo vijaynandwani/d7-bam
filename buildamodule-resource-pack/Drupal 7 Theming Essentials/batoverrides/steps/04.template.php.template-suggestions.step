@@ -1,0 +1,46 @@
+<?php
+
+// Change text of 'Read more' links.
+function batoverrides_preprocess_link(&$variables) {
+  if (strpos($variables['text'], 'Read more') !== FALSE) {
+    $variables['text'] = str_replace('Read more', 'Show me!', $variables['text']);
+  }
+}
+
+// Change every image to a Druplicon if the user is anonymous.
+function batoverrides_preprocess_image(&$variables) {
+  global $user;
+  if ($user->uid == 0) {
+    $variables['path'] = 'misc/druplicon.png';
+  }
+}
+
+// Use different page templates based on various conditions.
+function batoverrides_preprocess_page(&$variables) {
+ 
+  /*
+  // Choose a different page template for anonymous users.
+  // Look in $variables['theme_hook_suggestions'] for possible template file names.
+  if ($variables['user']->uid == 0 && $_GET['q'] != 'user') {
+    $variables['log_in'] = l('log in', 'user');
+    $variables['theme_hook_suggestion'] = 'page__anonymous';
+  }
+  */
+ 
+  /*
+  // Chose a different page template based on node type.
+  if (isset($variables['node'])) {
+    $variables['theme_hook_suggestion'] = 'page__' . $variables['node']->type;
+  }
+  */
+ 
+  /*
+  // Add additonal suggestions for the anonymous / node type combination.
+  // Change above example to use theme_hook_suggestions.
+  if ($variables['user']->uid == 0 && $_GET['q'] != 'user') {
+    if (isset($variables['node'])) {
+      $variables['theme_hook_suggestions'][] = 'page__anonymous__' . $variables['node']->type;
+    }
+  }
+  */
+}

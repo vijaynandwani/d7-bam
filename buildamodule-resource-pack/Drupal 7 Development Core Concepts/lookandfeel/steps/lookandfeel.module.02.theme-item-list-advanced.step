@@ -1,0 +1,57 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ * Examples of using and manipulating the theme layer in a module.
+ */
+
+
+/**
+ * Implements hook_menu().
+ */
+function lookandfeel_menu() {
+  $items['theming-examples'] = array(
+    'title' => 'Theming examples',
+    'description' => 'Examples of implementing theme functions.',
+    'page callback' => 'lookandfeel_examples_page',
+    'access arguments' => array('access content'),
+  );
+  return $items;
+}
+
+
+/**
+ * Displays theming examples.
+ */
+function lookandfeel_examples_page() {
+  $output = '';
+  
+  
+  // Example of using theme_item_list() to generate a list from an array. To learn more, see:
+  // http://api.drupal.org/api/drupal/includes--theme.inc/function/theme_item_list/7
+  $output .= '<h2>Simple list</h2>';
+  $items = array(
+    'Go to <code>Configuration > Development > Performance</code>',
+    'Click on "Clear caches"',
+    'Alternately, simply visit <code>admin/config/development/performance</code>',
+  );
+  $output .= theme('item_list', array('items' => $items));
+  
+  
+  // More complex example of theme_item_list().
+  $output .= '<h2>Slightly more complex list</h2>';
+  $items = array(
+    'Go to <code>Configuration > Development > Performance</code>',
+    'Click on "Clear caches"',
+    'Alternately, simply visit <code>admin/config/development/performance</code>',
+  );
+  $output .= theme('item_list', array(
+    'items' => $items,
+    'type' => 'ol',
+    'title' => t('How to clear the cache'),
+  ));
+  
+  
+  return $output;
+}

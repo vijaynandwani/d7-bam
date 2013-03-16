@@ -1,0 +1,33 @@
+diff --git a/advanced_help.module b/advanced_help.module
+old mode 100644
+new mode 100755
+index ad55411..3f7ee70
+--- a/advanced_help.module
++++ b/advanced_help.module
+@@ -319,15 +319,17 @@ function advanced_help_get_topic_hierarchy(&$topics) {
+  */
+ function advanced_help_form_system_modules_alter(&$form, &$form_state) {
+   $advanced_help_modules = drupal_map_assoc(array_keys(advanced_help_get_topics()));
+-  foreach (element_children($form['modules']) as $group) {
+-    foreach (element_children($form['modules'][$group]) as $module) {
+-      if (isset($advanced_help_modules[$module])) {
+-        $form['modules'][$group][$module]['links']['help'] = array(
+-          '#type' => 'link',
+-          '#title' => t('Help'),
+-          '#href' => "admin/advanced_help/$module",
+-          '#options' => array('attributes' => array('class' =>  array('module-link', 'module-link-help'), 'title' => t('Help'))),
+-        );
++  if (isset($form['modules'])) {
++    foreach (element_children($form['modules']) as $group) {
++      foreach (element_children($form['modules'][$group]) as $module) {
++        if (isset($advanced_help_modules[$module])) {
++          $form['modules'][$group][$module]['links']['help'] = array(
++            '#type' => 'link',
++            '#title' => t('Help'),
++            '#href' => "admin/advanced_help/$module",
++            '#options' => array('attributes' => array('class' =>  array('module-link', 'module-link-help'), 'title' => t('Help'))),
++          );
++        }
+       }
+     }
+   }

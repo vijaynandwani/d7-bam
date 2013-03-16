@@ -1,0 +1,24 @@
+name = BAT (Build a Theme)
+description = Example theme for Drupal 7
+core = 7.x
+engine = phptemplate
+
+regions[header] = Header
+regions[content] = Content
+regions[footer] = Footer
+
+regions_hidden[] = footer
+
+stylesheets[all][] = style.css
+
+settings[bat_subheading] = THIS IS A DEFAULT
+
+features[] = logo
+features[] = name
+features[] = slogan
+features[] = node_user_picture
+features[] = comment_user_picture
+features[] = search
+features[] = favicon
+features[] = main_menu
+features[] = secondary_menu

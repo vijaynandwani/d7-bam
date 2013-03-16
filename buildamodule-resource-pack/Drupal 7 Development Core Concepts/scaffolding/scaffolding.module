@@ -1,0 +1,39 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ * Demonstrate basic module scaffolding.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function scaffolding_menu() {
+  // Module settings.
+  $items['admin/settings/scaffolding'] = array(
+    'title' => 'Scaffolding',
+    'description' => 'Scaffolding configuration',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('scaffolding_admin_settings'),
+    'access arguments' => array('access administration pages'),
+    'file' => 'scaffolding.admin.inc',
+    'file path' => drupal_get_path('module', 'scaffolding'),
+  );
+  return $items;
+}
+
+
+/**
+ * Implements hook_help().
+ */
+function scaffolding_help($path, $arg) {
+  switch ($path) {
+    case 'admin/settings/scaffolding':
+      return t('This is some help text for the scaffolding settings page.');
+
+    case 'admin/help#scaffolding':
+      $output = '<p>' . t('This is help text for the scaffolding help page') . '</p>';
+      return $output;
+  }
+}

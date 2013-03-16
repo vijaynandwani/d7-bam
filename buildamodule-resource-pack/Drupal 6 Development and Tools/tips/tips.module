@@ -1,0 +1,204 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ * An overview of common utilitiy functions, Drupal editors and how to search for duplicates.
+ */
+
+/**
+ * Implements hook_menu().
+ *
+ * Challenge yourself!
+ *  - Make these pages visible only to administrators.
+ *  - Add a new page and list the main things you learned in this video.
+ */
+function tips_menu() {
+  $items['tips'] = array(
+    'title' => 'Utility functions',
+    'description' => 'Examples of common utility functions.',
+    'page callback' => 'tips_page',
+    'access arguments' => array('access content'),
+  );
+  $items['editors'] = array(
+    'title' => 'Editors',
+    'description' => 'Links and details about solid Drupal editors.',
+    'page callback' => 'tips_editors_page',
+    'access arguments' => array('access content'),
+  );
+  $items['duplicate'] = array(
+    'title' => 'How to check if your module idea exists',
+    'description' => "A few tools to use to help insure you don't recreate the wheel.",
+    'page callback' => 'tips_duplicate_page',
+    'access arguments' => array('access content'),
+  );
+  return $items;
+}
+
+
+/**
+ * Displays the tips module demo page.
+ *
+ * Challenge yourself!
+ *  - Empty this function and re-write code that uses l(), t(), variable_get(),
+ *    variable_set() and drupal_set_message()
+ *  - Find strings that aren't transtable and make them translatable.
+ *  - Display an error message to the user every time they've visited
+ *    the tips page 10 times.
+ */
+function tips_page() {
+  global $user; // This was added after the video was created.
+  $output = '';
+
+  // Examples of using the url() function. Learn more at:
+  // http://api.drupal.org/api/drupal/includes--common.inc/function/url/7
+  $output .= '<h2>Examples of url()</h2>';
+  $url_examples['Simple path'] = url('admin/modules');
+  $url_examples['External path'] = url('http://example.com');
+  $url_examples['Absolute local path'] = url('admin/modules', array('absolute' => TRUE));
+  $url_examples['Fragment'] = url('admin/modules', array('fragment' => 'footer'));
+  $url_examples['Query string'] = url('admin/modules', array('query' => array('destination' => 'admin')));
+
+  // Loop through and add url examples to output.
+  foreach ($url_examples as $key => $value) {
+    $output .= '<p><strong>' . $key . '</strong><br />' . $value . '</p>';
+  }
+
+
+  // Examples of using the l() function. Learn more at:
+  // http://api.drupal.org/api/drupal/includes--common.inc/function/l/7
+  $output .= '<h2>Examples of l()</h2>';
+  $l_examples['Simple path'] = l('Simple path', 'admin/modules');
+  $l_examples['External path'] = l('External path', 'http://example.com');
+  $l_examples['Absolute local path'] = l('Absolute local', 'admin/modules', array('absolute' => TRUE));
+  $l_examples['Fragment'] = l('Fragment', 'admin/modules', array('fragment' => 'footer'));
+  $l_examples['Query string'] = l('Query string', 'tips', array('query' => array(
+    'destination' => 'admin',
+    'random_string' => '<h1>This is random!',
+  )));
+  $l_examples['Attributes'] = l('With attributes', 'admin/modules', array('attributes' => array(
+    'class' => 'active',
+    'target' => '_blank',
+    'rel' => 'some_value',
+  )));
+
+  // Loop through and add l examples to output.
+  foreach ($l_examples as $key => $value) {
+    $output .= '<p><strong>' . $key . '</strong><br />' . $value . '</p>';
+  }
+
+
+  // Examples of using the t() function. Learn more at:
+  // http://api.drupal.org/api/drupal/includes--bootstrap.inc/function/t/7
+  $output .= '<h2>Examples of t()</h2>';
+  $t_examples['String'] = t('I am user number 1.');
+  $t_examples['String with as-is placeholder (!)'] = t('I am user number !uid.', array('!uid' => $user->uid));
+  if (isset($_GET['random_string'])) { // Added after video was created.
+    $t_examples['String with sanitized placeholder (@)'] = t(
+      'The random string is: @random.',
+      array('@random' => $_GET['random_string'])
+    );
+    $t_examples['String with escaped and highlighted placeholder (%)'] = t(
+      'The random string is: %random.',
+      array('%random' => $_GET['random_string'])
+    );
+  }
+
+  // Loop through and add l examples to output.
+  foreach ($t_examples as $key => $value) {
+    $output .= '<p><strong>' . $key . '</strong><br />' . $value . '</p>';
+  }
+
+
+  // Examples of variable_get(), variable_set() and variable_del(). See here for more information:
+  // http://api.drupal.org/api/drupal/includes--bootstrap.inc/function/variable_get/7
+  // http://api.drupal.org/api/drupal/includes--bootstrap.inc/function/variable_set/7
+  // http://api.drupal.org/api/drupal/includes--bootstrap.inc/function/variable_del/7
+
+  // Get the variable, if it exists.
+  $variable = variable_get('tips_variable', 0);
+
+  // Increment the variable by 1.
+  $variable++;
+
+  // Set the variable to the new value.
+  variable_set('tips_variable', $variable);
+
+  // Clear the variable.
+  if (isset($_GET['clear'])) {
+    variable_del('tips_variable');
+  }
+
+  // Add variable example to the output.
+  $output .= '<h2>Example of variable_get(), variable_set() and variable_del()</h2>';
+  $output .= '<p>The variable is currently set to ' . variable_get('tips_variable', '0') . '. ' . l('Increment the variable by 1', 'tips') . '. ' . l('Delete the variable', 'tips', array('query' => array('clear' => 1))) . '</p>';
+
+
+  // Examples of drupal_set_message(). Learn more at:
+  // http://api.drupal.org/api/devel/devel.module/function/devel_set_message/7
+  if ($variable == 1) {
+    drupal_set_message(t('Random tip: Internet Explorer has a 31 file limit on stylesheets.'));
+  }
+
+  if (isset($_GET['clear']) && $_GET['clear'] == 1) { // Adjusted after video was created.
+    drupal_set_message('<em>' . t('You just cleared the <b>tips_variable</b> variable from !number to 0.', array('!number' => $variable)) . '</em>', 'warning');
+  }
+
+  return $output;
+
+}
+
+
+/**
+ * Displays a list of good Drupal editors.
+ */
+function tips_editors_page() {
+
+  // Display a list of nice features.
+  $nice_features = array(
+    'Debugger integration.',
+    'Function list view.',
+    '"Jump to function definition" feature.',
+    'Version control integration.',
+    'Ability to search all files.',
+    'Ability to set syntax highlighting for special extensions like .module and .install.',
+    'Ability to use two spaces for tabs.',
+    'Sync with remote site.',
+  );
+  foreach ($nice_features as $value) {
+    $nice_features_output .= '<li>' . $value . '</li>';
+  }
+  $output .= '<ul>' . $nice_features_output . '</ul>';
+
+  // Display a list of editors
+  $output .= '<h2>Decent Editors</h2>';
+
+  $header = array('Link', 'OSX', 'Linux', 'Win', 'Price');
+  $rows[] = array(l('Komodo IDE', 'http://www.activestate.com/komodo-ide'), 'x', 'x', 'x', '$245');
+  $rows[] = array(l('Eclipse PDT', 'http://www.eclipse.org/pdt/'), 'x', 'x', 'x', 'Free');
+  $rows[] = array(l('PhpEd', 'http://www.nusphere.com/'), '', '', 'x', '$299');
+  $rows[] = array(l('Coda', 'http://panic.com/coda/'), 'x', '', '', '$99');
+  $rows[] = array(l('TextMate', 'http://macromates.com/'), 'x', '', '', '$55');
+  $output .= theme('table', array('header' => $header, 'rows' => $rows));
+
+  return $output;
+}
+
+
+/**
+ * Display tips for finding out if your module idea exists already.
+ *
+ * Check out the "Similar Moudle Review" here: http://groups.drupal.org/similar-module-review
+ * Learn more about checking out via CVS here: http://drupal.org/node/321
+ *
+ */
+function tips_duplicate_page() {
+
+  $tips[] = l('Search on google with the site:drupal.org/project modifier.', 'http://www.google.com/search?q=site%3Adrupal.org%2Fproject');
+  $tips[] = l('Use drupal.org to search modules.', 'http://drupal.org/search/apachesolr_multisitesearch/example?filters=ss_meta_type%3Amodule');
+  $tips[] = 'Download the entire module contrib repository using this code and then Then use ' . l('grep', 'http://en.wikipedia.org/wiki/Grep') . ' to search for keywords: <br /><code>cvs -z6 -d:pserver:anonymous:anonymous@cvs.drupal.org:/cvs/drupal-contrib checkout contributions/modules</code>';
+
+  $output = '<ul><li>' . implode('</li><li>', $tips) . '</li></ul>';
+
+  return $output;
+}

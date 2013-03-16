@@ -1,0 +1,9 @@
+; $Id$
+name = Trails
+description = Stores a trail of previously visited pages.
+package = Build a Module
+core = 7.x
+configure = admin/config/trails
+files[] = trails.module
+files[] = trails.admin.inc
+dependencies[] = block

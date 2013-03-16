@@ -1,0 +1,11 @@
+; $Id$
+; Read more about Drupal 7 .info files here: http://drupal.org/node/542202
+name = Scaffolding
+description = Example module to demonstrate module scaffolding.
+package = Build a Module
+core = 7.x
+php = 5.1
+configure = admin/config/scaffolding
+files[] = scaffolding.module
+files[] = scaffolding.admin.inc
+dependencies[] = block

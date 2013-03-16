@@ -1,0 +1,5 @@
+; $Id$
+name = Stuff: Node API Examples
+description = Examples of loading, modifying and saving node content using the Node API.
+package = Build a Module
+core = 7.x

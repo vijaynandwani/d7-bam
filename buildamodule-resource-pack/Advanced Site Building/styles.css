@@ -1,0 +1,54 @@
+body {
+  border:10px solid red;
+}
+
+.float-right {
+  float: right;
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+
+
+/* ----- Blog slideshow  ------*/
+
+/* Slideshow pager divs (to get images inline) */
+.view-id-blog_main_page.view-display-id-attachment_1  .views-slideshow-pager-fields div {
+  display: inline !important;
+}
+/* Active slideshow image */
+.view-id-blog_main_page.view-display-id-attachment_1  .views-slideshow-pager-fields .active img {
+  border: 3px solid #666;
+}
+/* Slideshow pager and title */
+.view-id-blog_main_page.view-display-id-attachment_1  .views-slideshow-pager-fields, .view-id-blog_main_page.view-display-id-attachment_1 .views-field-title {
+  width: 690px;
+  background: #ccc;
+}
+/* Overall slideshow */
+.view-id-blog_main_page.view-display-id-attachment_1 {
+  margin-bottom: 60px;
+}
+/* Next and previous buttons */
+.view-id-blog_main_page.view-display-id-attachment_1 .views-slideshow-controls-text-previous a, .view-id-blog_main_page.view-display-id-attachment_1 .views-slideshow-controls-text-next a {
+  height:54px;
+  width: 54px;
+  text-indent: -9999px;
+  position: absolute;
+  display: block;
+  z-index: 99;
+  margin-top:160px;
+}
+/* Previous button */
+.view-id-blog_main_page.view-display-id-attachment_1 .views-slideshow-controls-text-previous a {
+  background: url('images/previous.png');
+  margin-left:50px;
+}
+/* Next button */
+.view-id-blog_main_page.view-display-id-attachment_1 .views-slideshow-controls-text-next a {
+  background: url('images/next.png');
+  margin-left:590px;
+}
+/* Pause link */
+.view-id-blog_main_page.view-display-id-attachment_1 .views-slideshow-controls-text-pause {
+  display: none;
+}

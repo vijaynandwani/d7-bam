@@ -1,0 +1,5 @@
+; $Id$
+name = New Stuff
+description = Example of adding a new node type with an extra field.
+package = Build a Module
+core = 7.x

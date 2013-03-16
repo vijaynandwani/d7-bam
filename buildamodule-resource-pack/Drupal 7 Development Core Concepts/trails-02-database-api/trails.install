@@ -1,0 +1,112 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ * Install, update and uninstall functions for the trails module
+ *
+ * In this version we demonstrate the use of hook_update_N() to add
+ * a new database table.
+ *
+ * For more information on hook_update_N(), see:
+ * http://drupal.org/node/150215 and
+ * http://api.drupal.org/api/drupal/modules--system--system.api.php/function/hook_update_N/7
+ */
+
+/**
+ * Implements hook_install().
+ */
+function trails_install() {
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function trails_uninstall() {
+}
+
+/**
+ * Implements hook_schema().
+ */
+function trails_schema() {
+  $schema['trails_history'] = array(
+    'description' => 'Stores the history of each page loaded by a user.',
+    'fields' => array(
+      'thid' => array(
+        'description' => 'The unique ID for each history item.',
+        'type' => 'serial',
+        'not null' => FALSE,
+      ),
+      'timestamp' => array(
+        'description' => 'The Unix timestamp when this page was visited.',
+        'type' => 'int',
+        'not null' => FALSE,
+      ),
+      'path' => array(
+        'description' => 'The path of the visited page.',
+        'type' => 'text',
+        'not null' => FALSE,
+      ),
+      'title' => array(
+        'description' => 'The title of the visited page.',
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => FALSE,
+      ),
+      'sid' => array(
+        'description' => "The {session}.sid of the user visiting the page.",
+        'type' => 'varchar',
+        'length' => '128',
+        'not null' => FALSE,
+      ),
+      'uid' => array(
+        'description' => 'The {users}.uid that visited the page.',
+        'type' => 'int',
+        'not null' => FALSE,
+      ),
+    ),
+    'primary key' => array('thid'),
+  );
+
+  return $schema;
+}
+
+
+/**
+ * Adds trail_trail table.
+ */
+function trails_update_7001() {
+  $schema['trails_trail'] = array(
+    'description' => 'Stores settings for trail blocks.',
+    'fields' => array(
+      'trail_id' => array(
+        'description' => 'The unique ID of the trail.',
+        'type' => 'serial',
+        'not null' => TRUE,
+      ),
+      'settings' => array(
+        'description' => 'A serialized array of settings for the trail.',
+        'type' => 'text',
+        'not null' => FALSE,
+      ),
+      'uid' => array(
+        'description' => 'The {users}.uid that created this trail.',
+        'type' => 'int',
+        'not null' => FALSE,
+      ),
+      'created' => array(
+        'description' => 'The Unix timestamp when this trail was created.',
+        'type' => 'int',
+        'not null' => FALSE,
+      ),
+      'changed' => array(
+        'description' => 'The Unix timestamp when this trail was last updated.',
+        'type' => 'int',
+        'not null' => FALSE,
+      ),
+    ),
+    'primary key' => array('trail_id'),
+  );
+
+  db_create_table('trails_trail', $schema['trails_trail']);
+}

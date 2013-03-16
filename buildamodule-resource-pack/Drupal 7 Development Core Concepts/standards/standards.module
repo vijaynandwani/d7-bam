@@ -1,0 +1,164 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ * Demonstrates how to implement and check for coding standard compliance.
+ *
+ * See http://drupal.org/coding-standards for more information.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function standards_menu() {
+  // Module settings.
+  $items['standards'] = array(
+    'title' => 'Coding Standards',
+    'description' => 'Coding standards demo',
+    'page callback' => 'standards_page',
+    'access arguments' => array('access content'),
+  );
+  return $items;
+}
+
+
+/**
+ * Displays the coding standards demo page.
+ */
+function standards_page() {
+  
+  /*
+  The easiest way to check if your code is following coding standards
+  is to :
+    1. Install the Coder module (http://drupal.org/project/coder).
+    2. Go to the module management page (admin/modules).
+    3. Click on the "Code Review" link next to your module.
+    4. To check for everything, click the "Selection form" and
+       select "minor (most)".
+  */
+  
+  
+  /*
+    White space
+  
+    This bit of code has some extra white space at the end of the  
+    lines. View them by selecting the "View whitespace" option in  
+    your editor.  
+        
+    You can remove white space by doing a "find and replace", using
+    the following regular expression pattern: " *\n *?" and replacing
+    with "\n". 
+  */
+  
+  
+  /* Operators */
+  $test='something'; // Wrong
+  $test = 'something'; // Right!
+  $num ++; // Wrong
+  $num++; // Right!
+  
+  
+  /* Control structures (if, switch, for, etc) */
+  // Use curly braces!
+  
+  // Wrong
+  if($answer == 42) {
+    die("We're going to get lynched");
+  }else {
+    return false;
+  }
+  
+  // Right
+  if ($answer == 42) {
+    die("We're going to get lynched");
+  }
+  else {
+    return false;
+  }
+  
+  
+  /* Function calls */
+  $test=format_interval (60); // Wrong
+  $test = format_interval(60); // Right
+  
+  
+  // Function declarations
+  // Return something if you can.
+  
+  // Wrong
+  function myfoo($var_default = "", $var_empty) {
+  }
+  
+  // Right
+  function mybar($var_empty, $var_default = "") {
+  }
+  
+  
+  /* Class constructors */
+  // Add parentheses even when there's no arguments.
+  $foo = new MyClassName();
+  
+  
+  /* Arrays */
+  
+  // Short array
+  $array = array('one', 'two', 'foo' => 'bar');
+  
+  // Long (over 80 characters) array
+  $items['standards'] = array(
+    'title' => 'Coding Standards',
+    'description' => 'Coding standards demo',
+    'page callback' => 'standards_page',
+    'access arguments' => array('access content'),
+  );
+  
+  
+  /* Quotes */
+  // No offical rule, but use single quotes whenever using double
+  // quotes wouldn't make things simpler.
+  $test = "It's a single quote in double quotes";
+  $test = "Or a $variable in double quote";
+  
+  
+  /* String concatenations (a period between two strings) */
+  // Always have a space before and after the period.
+  $test .= $foo . $bar . 'string';
+  
+  
+  /* Comments */
+  // 1. Use them whenver in doubt.
+  // 2. Use Doxygen style formatting (http://drupal.org/node/1354).
+  // 3. Write using correct grammar, including full sentences and periods.
+  // 4. Use // style comments within a function, not /* */.
+  
+  
+  /* Including code */
+  // 1. Use require_once() for unconditional includes.
+  // 2. Use include_once() for conditional includes.
+  // 3. Use the DRUPAL_ROOT . '/' . '/includes/file.inc' format to reference
+  //    files within the same directory.
+  
+  
+  /* PHP tags */
+  // 1. Open with <?php.
+  // 2. Always use the full tag <?php, not <?.
+  // 3. Leave off the closing PHP tag at the end of a file.
+  
+  
+  /* Semi-colons */
+  // Use them even when optional.
+  // <?php echo 'test' // Wrong
+  // <?php echo 'test'; // Right!
+  
+  
+  /* Miscelaneous */
+  // * Always use example.com for fake URLs.
+  // * Functions and variables should use all lower case with underscores.
+  // * Constants should be all upper case with underscores.
+  // * Classes should use camel case.
+  // * All docs files should end in .txt with the name being all caps, like
+  //    README.txt.
+  
+  
+}

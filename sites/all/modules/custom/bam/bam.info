@@ -1,0 +1,5 @@
+name = Bam
+description = Example module for Build a Module site
+package = Build a Module
+core = 7.x
+files[] = bam.module

@@ -1,0 +1,120 @@
+<?php
+
+include('database.php');
+
+// We're setting up a function to pull together notices to the user and display them.
+function notice($text, $action = 'add') {
+  static $notices;
+  if ($action == 'add') {
+    $notices[] = $text;
+  } elseif ($action == 'get') {
+    if (count($notices) > 0) {
+      $output = '<strong><ul><li>' . implode('</li><li>', $notices) . '</li></ul></strong>';
+      unset($notices);
+      return $output;
+    }
+  }
+}
+
+// A shortcut function that's more intuitive to use for getting the notices.
+function get_notices() {
+  return notice('', 'get');
+}
+
+// Display people in the database as a table with a delete link.
+function people_display() {
+  
+  $output = '';
+  $result = mysql_query("SELECT * FROM people ORDER BY name ASC");
+  while ($row = mysql_fetch_array($result)) {
+    $output .= '
+      <tr>
+        <td>' . $row['name'] . '</td>
+        <td>' . $row['username'] . '</td>
+        <td>' . $row['birth_year'] . '</td>
+        <td>' . $row['shoe_size'] . '</td>
+        <td>' . $row['favorite_band'] . '</td>
+        <td><a href="test.php?action=delete&username=' . $row['username'] . '">Delete</a></td>
+      </tr>';
+  }
+  if ($output != '') {
+    $output = '
+      <table>
+        <tr>
+          <th>Name</th>
+          <th>Username</th>
+          <th>Birth year</th>
+          <th>Shoe size</th>
+          <th>Favorite band</th>
+        </tr>
+        ' . $output . '
+      </table>';
+  } else {
+    $output = '<p>There are no people to display.</p>';
+  }
+  
+  return '<p><a href="test.php?action=add_form">Add person</a></p>' . $output;
+}
+
+// Creates a form to add entries into our 'people' table.
+function add_form() {
+  return '
+    <form action="test.php?action=add" method="post">
+      <p>First name: <input type="text" name="first" /></p>
+      <p>Birth year: <input type="text" name="birth_year" /></p>
+      <p>Favorite band: <input type="text" name="fav_band" /></p>
+      <p>Shoe size: <input type="text" name="shoe_size" /></p>
+      <p>Username: <input type="text" name="username" /></p>
+      <p>Password: <input type="text" name="password" /></p>
+      <p><input type="submit" value="Add entry" /></p>
+    </form>';
+}
+
+$output = '';
+
+if (isset($_GET['action'])) {
+  switch ($_GET['action']) {
+    
+    case 'delete':
+      mysql_query("DELETE FROM people WHERE username = '" . mysql_real_escape_string($_GET['username']) . "'");
+      notice('The user ' . $_GET['username'] . ' was deleted.');
+      break;
+    
+    case 'add_form':
+      $output .= add_form();
+      break;
+    
+    case 'add':
+      // Let's create a loop to clean up our values.
+      $inputs = array('first', 'birth_year', 'fav_band', 'shoe_size', 'username', 'password');
+      foreach ($inputs as $key => $input_name) {
+        $inputs[$key] = mysql_real_escape_string($_POST[$input_name]);
+      }
+      
+      // Let's pull all the values together to add to our query.
+      $values = "'" . implode("','", $inputs) . "'";
+      $sql = "INSERT INTO people (name, birth_year, favorite_band, shoe_size, username, password) VALUES (" . $values . ")";
+      $result = mysql_query($sql);
+      notice($sql);
+      
+      // $result will return TRUE if it worked. Otherwise, we should show an error to troubleshoot.
+      if ($result) {
+        notice('The person was added.');
+      } else {
+        // If something happened, let's show an error.
+        notice(mysql_error());
+      }
+      break;
+
+  }
+}
+
+// If we didn't specify what we wanted to display, show the list of people.
+if ($output == '') {
+  $output = people_display();
+}
+
+
+print get_notices() . $output;
+
+?>

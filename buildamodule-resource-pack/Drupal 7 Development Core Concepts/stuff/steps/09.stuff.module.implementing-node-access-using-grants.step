@@ -1,0 +1,297 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ * Demonstrate how to load, view and modify nodes with the Node API.
+ *
+ * In this file, we're loading and modifying multiple nodes, then saving them.
+ */
+
+
+/**
+ * Implements hook_menu().
+ */
+function stuff_menu() {
+  $items['stuff'] = array(
+    'title' => 'Node API examples',
+    'page callback' => 'stuff_examples_page',
+    'description' => 'Examples of using the Node API.',
+    'access callback' => TRUE,
+  );
+  return $items;
+}
+
+
+/**
+ * Menu callback; Examples of using the Node API.
+ */
+function stuff_examples_page() {
+
+  // Example 1: Loading a single node and displaying it in full and teaser mode.
+  if ($node = node_load(50)) {
+    $build['node_display'] = node_view($node);
+    $build['teaser_title'] = array(
+      '#type' => 'markup',
+      '#markup' => '<h3>Teaser mode</h3>',
+    );
+    $build['node_teaser'] = node_view($node, 'teaser');
+  }
+
+
+  // Example 2: Loading multiple nodes.
+  $build = array();
+  if ($nodes = node_load_multiple(array(50, 49, 48))) {
+    $build['nodes'] = node_view_multiple($nodes, 'teaser');
+  }
+
+
+  // Example 4: Use a custom build mode.
+  $build = array();
+  if ($nodes = node_load_multiple(array(50, 49, 48))) {
+    $build['nodes'] = node_view_multiple($nodes, 'stuff_backup_owner');
+  }
+
+
+  return $build;
+}
+
+
+/**
+ * Implements hook_form_alter().
+ *
+ * Adding an autocomplete user input to the node form.
+ */
+function stuff_form_alter(&$form, $form_state) {
+  if (!empty($form['#node_edit_form'])) {
+    $form['stuff_backup_user'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Backup user'),
+      '#default_value' => isset($form['#node']->stuff_backup_user) ? $form['#node']->stuff_backup_user : '',
+      '#autocomplete_path' => 'user/autocomplete',
+      '#size' => '12',
+      '#maxlength' => '60',
+      '#description' => t('Please specifiy a user that can modify your content should you meet an untimely demise.'),
+    );
+  }
+}
+
+
+/**
+ * Implements hook_node_insert().
+ *
+ * Add backup user data when the node is saved.
+ *
+ * For more info, see:
+ * http://api.drupal.org/api/drupal/modules--node--node.api.php/function/hook_node_insert/7
+ */
+function stuff_node_insert($node) {
+  if (isset($node->stuff_backup_user)) {
+    db_insert('stuff_backup')
+      ->fields(array(
+        'nid' => $node->nid,
+        'username' => $node->stuff_backup_user))
+      ->execute();
+  }
+
+  // Set a message so we know the update ran.
+  drupal_set_message(t('You have set @username as the backup user for this node.', array('@username' => $node->stuff_backup_user)));
+}
+
+
+/**
+ * Implements hook_node_update().
+ *
+ * Save the backup user data when the node is saved. Needs to make sure we take into account
+ * nodes that existed before our module was installed.
+ *
+ * For more info, see:
+ * http://api.drupal.org/api/drupal/modules--node--node.api.php/function/hook_node_update/7
+ *
+ */
+function stuff_node_update($node) {
+
+  // If there is already a record, update it.
+  if (db_query('SELECT nid FROM {stuff_backup} WHERE nid = :nid', array(':nid' => $node->nid))->fetchField()) {
+    $num_updated = db_update('stuff_backup')
+    ->fields(array(
+        'nid' => $node->nid,
+        'username' => $node->stuff_backup_user,
+    ))
+    ->condition('nid', $node->nid)
+    ->execute();
+
+    // Set a message so we know the update ran.
+    drupal_set_message(t('You have updated the node to use @username as the backup user for this node.', array('@username' => $node->stuff_backup_user)));
+  }
+
+  // Otherwise, insert a new one.
+  else {
+    stuff_node_insert($node);
+  }
+}
+
+
+/**
+ * Implements hook_node_delete().
+ *
+ * Make sure to delete our backup user data from the custom table.
+ *
+ * For more info, see:
+ * http://api.drupal.org/api/drupal/modules--node--node.api.php/function/hook_node_delete/7
+ */
+function stuff_node_delete($node) {
+  db_delete('stuff_backup')->condition('nid', $node->nid)->execute();
+}
+
+
+/**
+ * Implements hook_node_load().
+ *
+ * Pulls in data from the backup user table into the $node object.
+ *
+ * For more info, see:
+ * http://api.drupal.org/api/drupal/modules--node--node.api.php/function/hook_node_load/7
+ */
+function stuff_node_load($nodes, $types) {
+  $result = db_query('SELECT nid, username FROM {stuff_backup} WHERE nid IN(:nids)', array(':nids' => array_keys($nodes)));
+  foreach ($result as $row) {
+    $nodes[$row->nid]->stuff_backup_user = $row->username;
+  }
+}
+
+
+
+/**
+ * Implements hook_node_view().
+ *
+ * Adding the backup user information to display in the node.
+ *
+ * For more info, see:
+ * http://api.drupal.org/api/drupal/modules--node--node.api.php/function/hook_node_view/7
+ */
+function stuff_node_view($node, $view_mode, $langcode) {
+  if ($node->stuff_backup_user != '') {
+    $node->content['stuff_backup'] = array(
+      '#username' => $node->stuff_backup_user,
+      '#theme' => 'stuff_backup_user',
+    );
+  }
+  
+  // Add yellow bar to top of content if the current user is the backup user.
+  if ($view_mode == 'stuff_backup_owner') {
+    global $user;
+    if ($user->name == $node->stuff_backup_user) {
+      $node->content['stuff_backup_message'] = array(
+        '#type' => 'markup',
+        '#markup' => '<div style="background:yellow">' . t('You are the backup user for this node.') . '</div>',
+        '#weight' => -10,
+      );
+    }
+  }
+}
+
+
+/**
+ * Implements hook_theme().
+ */
+function stuff_theme() {
+  return array(
+    'stuff_backup_user' => array(
+      'variables' => array('username' => NULL),
+    ),
+  );
+}
+
+
+/**
+ * Themes the backup user information when viewing a node.
+ */
+function theme_stuff_backup_user($variables) {
+  return '<h3>' . t('Backup user') . '</h3><p>' . $variables['username'] . '</p>';
+}
+
+
+/**
+ * Implements hook_entity_info_alter().
+ *
+ * Adding a new view mode. Adding view modes allows other modules to know more
+ * about the context where this node is rendered.
+ *
+ * For more info, see:
+ * http://api.drupal.org/api/drupal/modules--system--system.api.php/function/hook_entity_info_alter/7
+ */
+function stuff_entity_info_alter(&$entity_info) {
+  $entity_info['node']['view modes']['stuff_backup_owner'] = array(
+    'label' => t('Special formatting for backup user'),
+    'custom settings' => TRUE,
+  );
+}
+
+
+/**
+ * Implements hook_node_operations().
+ *
+ * Adding the ability to clear the backup user for multiple nodes at once.
+ *
+ * For more info, see:
+ * http://api.drupal.org/api/drupal/modules--node--node.api.php/function/hook_node_operations/7
+ */
+function stuff_node_operations() {
+  $operations = array(
+    'clear_backup_users' => array(
+      'label' => t('Clear backup user information'),
+      'callback' => 'stuff_clear_backup_users',
+    ),
+  );
+
+  return $operations;
+}
+
+
+/**
+ * Callback for bulk operation on nodes to clear backup user data.
+ */
+function stuff_clear_backup_users($nodes) {
+  foreach ($nodes as $nid) {
+    db_delete('stuff_backup')->condition('nid', $nid)->execute();
+  }
+  drupal_set_message(t('The backup user information has been deleted.'));
+}
+
+
+/**
+ * Implements hook_node_grants().
+ *
+ * For more info, see:
+ * http://api.drupal.org/api/drupal/modules--node--node.api.php/function/hook_node_grants/7
+ */
+function stuff_node_grants($account, $op) {
+  $grants = array();
+  if ($op == 'update') {
+    $grants['stuff_backup_user'] = array($account->uid);
+  }
+  return $grants;
+}
+
+
+/**
+ * Implements hook_node_access_records().
+ *
+ * For more info, see:
+ * http://api.drupal.org/api/drupal/modules--node--node.api.php/function/hook_node_access_records/7
+ */
+function stuff_node_access_records($node) {
+  if (!empty($node->stuff_backup_user)) {
+    $grants = array();
+    $grants[] = array(
+      'realm' => 'stuff_backup_user',
+      'gid' => user_load_by_name(array('name' => $node->stuff_backup_user))->uid,
+      'grant_view' => 1,
+      'grant_update' => 1,
+      'grant_delete' => 1,
+      'priority' => 1,
+    );
+    return $grants;
+  }
+}

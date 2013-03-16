@@ -1,0 +1,18 @@
+<?php
+
+// Replace with the username and password you used for PhpMyAdmin.
+$server = 'localhost';
+$username = 'root';
+$password = 'test';
+$database = 'my_database';
+
+// Let's connect!
+$connection = mysql_connect($server, $username, $password);
+
+// If we can't connect, we should print out the error:
+if (!$connection) {
+  die('<strong>You were not able to connect to your database because ' . mysql_error() . '</strong>');
+}
+
+// To start querying, we need to select a database.
+mysql_select_db($database);

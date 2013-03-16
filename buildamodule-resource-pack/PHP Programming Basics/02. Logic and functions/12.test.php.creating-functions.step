@@ -1,0 +1,30 @@
+<?php
+
+// 1. A very simple function. It returns a string.
+function simple_function() {
+  return 'I am the return value from a function!';
+}
+
+// 2. A function with 2 parameters.
+function perform_calculation($num1, $num2) {
+  $result = $num1 * $num2;
+  return $result;
+}
+
+// 3. A practical function to roll dice.
+function roll_dice($highest_number = 6, $num_dice = 1) {
+  $output = '';
+  for($i = 0; $i < $num_dice; $i++) {
+    $number = rand(1, $highest_number);
+    $output .= ' [' . $number . '] ';
+  }
+  $output = 'The result of your roll was: ' . $output;
+  return $output;
+}
+
+//print simple_function();
+//print perform_calculation(6, 7);
+//print roll_dice();
+//print roll_dice(20, 10);
+
+?>

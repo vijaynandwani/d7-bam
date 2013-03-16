@@ -1,0 +1,13 @@
+<?php
+
+$peach = 'good';
+
+if ($peach == 'good') {
+  print 'This peach is very good!';
+}
+
+if ($peach == 'bad') {
+  print 'This peach is lame.';
+}
+
+?>

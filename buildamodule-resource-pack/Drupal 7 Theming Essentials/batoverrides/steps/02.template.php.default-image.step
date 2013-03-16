@@ -1,0 +1,11 @@
+<?php
+
+// Add 'CLICK ME!' to every link.
+function batoverrides_preprocess_link(&$variables) {
+  $variables['text'] .= 'CLICK ME!';
+}
+
+// Change every image to a Druplicon.
+function batoverrides_preprocess_image(&$variables) {
+  $variables['path'] = 'misc/druplicon.png';
+}

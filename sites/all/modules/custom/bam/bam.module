@@ -1,0 +1,37 @@
+<?php
+
+  /**
+   * Implements hook_menu().
+   */
+  function bam_menu() {
+    $items['bam-page'] = array(
+      'page callback' => 'bam_page',
+      'access arguments' => array('access content'),
+      'type' => MENU_CALLBACK,
+    );
+    return $items;
+  }
+
+  function bam_page() {
+    $output ='';
+    $output .= '<h2>Examples of url()</h2>';
+    $url_examples['Simple path'] = url('admin/modules');
+    $url_examples['External path'] = url('http://example.com');
+    $url_examples['Absolute Local path'] = url('admin/modules', array('absolute'=>TRUE));
+    $url_examples['Fragment'] = url('admin/modules', array('fragment' => 'footer'));
+    $url_examples['Query string'] = url('admin/modules', array('query' => array('destination' => 'admin')));
+
+    //foreach ($url_examples as $key => $value) {
+      // $output .= " <p><strong> $key </strong><br /> $value </p>";
+      $output2 = print_r($url_examples);
+
+    //}
+
+
+     return $output2;
+
+  }
+
+
+
+

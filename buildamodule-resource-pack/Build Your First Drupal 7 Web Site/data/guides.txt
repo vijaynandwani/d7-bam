@@ -1,0 +1,18 @@
+LEGEND:
+Name
+Specialties
+Biography
+
+-------------
+
+Kate Zanzerblath
+Mountain Climbing, Extreme Snorkeling
+Kate is a highly respected outdoorsperson and leads the pack in terms of hours as a guide.
+
+Joey Smitty
+Extreme Snorkeling, Base Jumping
+Joey is fluent in 4 languages and has been to the top of the highest 20 peaks worldwide.
+
+Phil Terry
+Extreme Snorkeling, Base Jumping, Mountain Climbing
+Phil is the founder of MagnifAscent and one of the co-founderes of the Extreme Snorkeling club.

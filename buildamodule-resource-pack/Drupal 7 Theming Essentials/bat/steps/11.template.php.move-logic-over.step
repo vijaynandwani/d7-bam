@@ -1,0 +1,9 @@
+<?php
+
+
+/**
+ * Override or insert variables into the page template.
+ */
+function bat_preprocess_page(&$variables) {
+  $variables['bat_subheading'] = theme_get_setting('bat_subheading');
+}

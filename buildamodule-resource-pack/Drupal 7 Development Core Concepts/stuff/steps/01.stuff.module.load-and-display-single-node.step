@@ -1,0 +1,42 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ * Demonstrate how to load, view and modify nodes with the Node API.
+ *
+ * In this file, we're loading a single node and returning it to view.
+ */
+
+
+/**
+ * Implements hook_menu().
+ */
+function stuff_menu() {
+  $items['stuff'] = array(
+    'title' => 'Node API examples',
+    'page callback' => 'stuff_examples_page',
+    'description' => 'Examples of using the Node API.',
+    'access callback' => TRUE,
+  );
+  return $items;
+}
+
+
+/**
+ * Menu callback; Examples of using the Node API.
+ */
+function stuff_examples_page() {
+
+  // Example 1: Loading a single node and displaying it in full and teaser mode.
+  if ($node = node_load(50)) {
+    $build['node_display'] = node_view($node);
+    $build['teaser_title'] = array(
+      '#type' => 'markup',
+      '#markup' => '<h3>Teaser mode</h3>',
+    );
+    $build['node_teaser'] = node_view($node, 'teaser');
+  }
+
+  return $build;
+}

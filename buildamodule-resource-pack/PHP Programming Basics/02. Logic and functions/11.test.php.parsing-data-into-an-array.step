@@ -1,0 +1,68 @@
+<?php
+
+// How to get contents from a file into a variable.
+ob_start();
+include('data.txt');
+$data = ob_get_contents();
+ob_end_clean();
+
+// Let's make sure we have the data.
+//die(var_dump($data));
+
+// Let's take our data and make it an array so it's easy to work with. This is called a 'parser'.
+$people_data_array = explode("\n", $data);
+//die(var_dump($people_data_array));
+
+// Loop through each line,
+foreach ($people_data_array as $person_string) {
+  $person_array = explode(',', $person_string);
+  $name = trim($person_array[0]);
+  $birthyear = trim($person_array[1]);
+  $fav_band = trim($person_array[2]);
+  $shoe_size = trim($person_array[3]);
+  $people[$name] = array(
+    'birthyear' => $birthyear,
+    'fav_band' => $fav_band,
+    'shoe_size' => $shoe_size,
+  );
+}
+
+// Let's check our array to make sure we parsed everything out properly.
+//die(var_dump($people));
+
+// Everthing below this is the same as our previous example.
+
+// Initialize our $output variable to prevent any errors.
+$output = '';
+
+// Now we loop through each item in the array and build some content.
+foreach ($people as $name => $details) {
+  $output .= '
+    <tr>
+      <td>'. $name .'</td>
+      <td>'. $details['birthyear'] . '</td>
+      <td>'. $details['fav_band'] . '</td>
+      <td>'. $details['shoe_size'] . '</td>
+    </tr>';
+}
+
+// If there's content, let's wrap a table around it. If not, diplay placeholder text.
+if ($output != '') {
+  $output = '
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Birth year</th>
+        <th>Favorite band</th>
+        <th>Shoe size</th>
+      </tr>
+      '. $output .'
+    </table>';
+}
+else {
+  $output = '<p>It looks like we don\'t have any data to display.</p>';
+}
+  
+print $output;
+
+?>

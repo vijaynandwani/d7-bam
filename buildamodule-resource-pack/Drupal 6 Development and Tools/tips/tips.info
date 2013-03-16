@@ -1,0 +1,6 @@
+; $Id$
+name = Tips and Tricks
+description = An overview of common utilitiy functions, Drupal editors and how to search for duplicates.
+package = Build a Module
+core = 7.x
+files[] = tips.module

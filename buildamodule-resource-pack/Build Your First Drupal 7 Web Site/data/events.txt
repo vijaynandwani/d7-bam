@@ -1,0 +1,60 @@
+LEGEND:
+Tour Name
+Tour Location
+Tour Type
+Dates
+Tour Guide
+
+----------------
+
+The Mt. McKinley Club, September Meeting
+Anchorage
+Mountain Climb
+September 3-7, 2020
+Joey Smitty
+
+Coral of Your Dreams NZ!
+New Zealand
+Extreme Snorkeling
+September 12-15, 2020
+Kate Zanzerblath
+
+Jump for Joy (Benefit), Zimbabwe
+Zimbabwe
+Base Jumping
+August 7-10, 2020
+Phil Terry
+
+African Mountain Tour, Zimbabwe
+Zimbabwe
+Mountain Climb
+August 11-17, 2020
+Kate Zanzerblath
+
+The Anti-Water Snorkel Club, August Meeting
+Zimbabwe
+Extreme Snorkeling
+August 18, 2020
+Kate Zanzerblath
+
+Jump for Joy (Benefit), Zimbabwe
+Zimbabwe
+Base Jumping
+November 7-10, 2020
+Joey Smitty
+
+African Mountain Tour, Zimbabwe
+Zimbabwe
+Mountain Climb
+November 11-17, 2020
+
+The Anti-Water Snorkel Club, November Meeting
+Zimbabwe
+Extreme Snorkeling
+November 18, 2020
+Joey Smitty
+
+The Mt. McKinley Club, December Meeting
+Anchorage
+Mountain Climb
+December 23-27, 2020

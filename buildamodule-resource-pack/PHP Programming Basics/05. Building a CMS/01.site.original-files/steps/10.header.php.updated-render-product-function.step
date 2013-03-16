@@ -1,0 +1,77 @@
+<?php
+  
+  // Takes array of product IDs and returns a rendered product list.
+  function render_products($product_ids = '') {
+    
+    // So we only need to include the product array once.
+    static $products;
+    
+    // Pull in the data.
+    if (!isset($products)) {
+      include('data/product-data.php');
+    }
+    
+    // Allow an empty value to display all the products.
+    if ($product_ids == '') {
+      $product_ids = array();
+      foreach ($products as $pid => $options) {
+        $product_ids[] = $pid;
+      }
+    }
+    
+    // This way we can pass one number or an array to the function.
+    if (!is_array($product_ids)) {
+      $product_ids = array($product_ids);
+    }
+    
+    // Render each product.
+    $output = '';
+    
+    foreach ($product_ids as $pid) {
+      $output .= '
+        <div class="product">
+          <div class="product-img"><img src="images/' . $products[$pid]['img'] . '" /></div>
+          <div class="product-price">$' . $products[$pid]['price'] . '</div>
+          <div class="product-title">' . $products[$pid]['title'] . '</div>
+          <a class="cart-button" href="#">Add to cart</a>
+        </div>';
+    }
+    
+    return $output;
+  }
+  
+  // Render featured products.
+  $featured_product_ids = array(1, 2);
+  $featured_product_output = render_products($featured_product_ids)
+
+?>
+
+<!DOCTYPE html>
+<html>
+  
+  <head>
+    <title><?php print $title; ?> | AmaZING! Inc.</title>
+    <link type="text/css" rel="stylesheet" media="all" href="styles/style.css" />
+  </head>
+
+  <body>
+    <div class="body">
+      <div class="header">
+        <div class="logo"><img src="images/logo.png" alt="Logo" /></div>
+        <div class="site-title">AmaZING! Inc: Throwing Sticks Done Right</div>
+        <div class="header-menu">
+          <ul>
+            <li><a href="index.php">Home</a></li>
+            <li><a href="products.php">Products</a></li>
+            <li><a href="about.php">About</a></li>
+            <li><a href="contact.php">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+  
+      <div class="content-outer">
+        <div class="left-column">
+          <div class="left-column-title">Featured sticks!</div>
+          <?php print $featured_product_output; ?>
+        </div>
+        <div class="content">

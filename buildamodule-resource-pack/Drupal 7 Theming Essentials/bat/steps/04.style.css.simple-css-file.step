@@ -1,0 +1,5 @@
+/* Simple example of including a CSS file */
+
+h1 {
+  background:yellow;
+}

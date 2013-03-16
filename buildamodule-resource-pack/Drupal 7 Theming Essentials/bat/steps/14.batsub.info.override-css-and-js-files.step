@@ -1,0 +1,37 @@
+; See http://drupal.org/node/225125 for details on sub-theme inheritance.
+; Logo and regions are not inherited.
+
+; Basic info. Note that the 'base theme' value is the name in the .info file, not the title.
+name = Build a Theme Subtheme
+description = Example subtheme for Drupal 7
+core = 7.x
+engine = phptemplate
+base theme = bartik
+
+; This overrides the parent css/layout.css file.
+stylesheets[all][] = css/style.css
+
+; This would override script.js if it existed.
+scripts[] = script.js
+
+; Regions aren't inherited, so this is copied over from Bartik.
+regions[header] = Header
+regions[help] = Help
+regions[page_top] = Page top
+regions[page_bottom] = Page bottom
+regions[highlighted] = Highlighted
+
+regions[featured] = Featured
+regions[content] = Content
+regions[sidebar_first] = Sidebar first
+regions[sidebar_second] = Sidebar second
+
+regions[triptych_first] = Triptych first
+regions[triptych_middle] = Triptych middle
+regions[triptych_last] = Triptych last
+
+regions[footer_firstcolumn] = Footer first column
+regions[footer_secondcolumn] = Footer second column
+regions[footer_thirdcolumn] = Footer third column
+regions[footer_fourthcolumn] = Footer fourth column
+regions[footer] = Footer

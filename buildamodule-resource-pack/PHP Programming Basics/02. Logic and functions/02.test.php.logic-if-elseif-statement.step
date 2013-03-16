@@ -1,0 +1,15 @@
+<?php
+
+$peach = 'good';
+
+if ($peach == 'good') {
+  print 'This peach is very good!';
+}
+elseif ($peach == 'bad') {
+  print 'This peach is lame.';
+}
+else { // Note that this is optional.
+  print 'Sorry, the peach rating is not valid.';
+}
+
+?>

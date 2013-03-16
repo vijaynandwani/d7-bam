@@ -1,0 +1,5 @@
+name = Appearance
+description = Example module to demonstrate working with the theme layer from the theming side.
+package = Build a Module
+core = 7.x
+files[] = appearance.module

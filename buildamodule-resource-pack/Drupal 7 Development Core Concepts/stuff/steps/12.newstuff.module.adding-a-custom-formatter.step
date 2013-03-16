@@ -1,0 +1,55 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ * Demonstrates adding a new node type and formatter.
+ */
+
+
+/**
+ * Implements hook_field_formatter_info().
+ */
+function newstuff_field_formatter_info() {
+  return array(
+    'newstuff_example_field' => array(
+      'label' => t('Example Field Formatter'),
+      'field types' => array('text'),
+    ),
+  );
+}
+
+
+/**
+ * Implements hook_field_formatter_view().
+ */
+function newstuff_field_formatter_view($object_type, $object, $field, $instance, $langcode, $items, $display) {
+  switch ($display['type']) {
+    case 'newstuff_example_field':
+      $element[0]['#type'] = 'markup';
+      $element[0]['#markup'] = theme('newstuff_example_field', array('value' => $items[0]['safe_value']));
+      break;
+  }
+
+  return $element;
+}
+
+
+/**
+ * Theme the example field.
+ */
+function theme_newstuff_example_field($variables) {
+  return '<blockquote>' . $variables['value'] . '</blockquote>';
+}
+
+
+/**
+ * Implements hook_theme().
+ */
+function newstuff_theme() {
+  return array(
+    'newstuff_example_field' => array(
+      'variables' => array('value' => NULL),
+    ),
+  );
+}

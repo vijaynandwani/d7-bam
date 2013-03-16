@@ -1,0 +1,31 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ * Install, update and uninstall functions for the Stuff Modifications module.
+ */
+
+
+/**
+ * Implements hook_schema().
+ */
+function stuff_schema() {
+  $schema['stuff_backup'] = array(
+    'description' => 'Stores an optional backup user for each node.',
+    'fields' => array(
+      'nid' => array(
+        'description' => 'The {nodes}.nid of the node.',
+        'type' => 'int',
+        'not null' => FALSE,
+      ),
+      'username' => array(
+        'description' => 'The {users}.name of the backup user.',
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => FALSE,
+      ),
+    ),
+  );
+  return $schema;
+}

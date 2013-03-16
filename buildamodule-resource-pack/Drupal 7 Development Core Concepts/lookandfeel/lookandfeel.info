@@ -1,0 +1,6 @@
+; $Id$
+name = Look and Feel: Theming Examples
+description = Examples of using and manipulating the theme layer in a module.
+package = Build a Module
+core = 7.x
+files[] = theming.module

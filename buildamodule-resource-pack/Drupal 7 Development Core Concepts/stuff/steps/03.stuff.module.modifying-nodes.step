@@ -1,0 +1,61 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ * Demonstrate how to load, view and modify nodes with the Node API.
+ *
+ * In this file, we're loading and modifying multiple nodes, then saving them.
+ */
+
+
+/**
+ * Implements hook_menu().
+ */
+function stuff_menu() {
+  $items['stuff'] = array(
+    'title' => 'Node API examples',
+    'page callback' => 'stuff_examples_page',
+    'description' => 'Examples of using the Node API.',
+    'access callback' => TRUE,
+  );
+  return $items;
+}
+
+
+/**
+ * Menu callback; Examples of using the Node API.
+ */
+function stuff_examples_page() {
+
+  // Example 1: Loading a single node and displaying it in full and teaser mode.
+  if ($node = node_load(50)) {
+    $build['node_display'] = node_view($node);
+    $build['teaser_title'] = array(
+      '#type' => 'markup',
+      '#markup' => '<h3>Teaser mode</h3>',
+    );
+    $build['node_teaser'] = node_view($node, 'teaser');
+  }
+
+
+  // Example 2: Loading multiple nodes.
+  $build = array();
+  if ($nodes = node_load_multiple(array(50, 49, 48))) {
+    $build['nodes'] = node_view_multiple($nodes, 'teaser');
+  }
+
+
+  // Example 3: Modifying existing nodes.
+  $build = array();
+  if ($nodes = node_load_multiple(array(50, 49, 48))) {
+    foreach ($nodes as $node) {
+      $node->title = 'Node #' . $node->nid . "'s title was changed at " . date('h:i:s', REQUEST_TIME);
+      node_save($node);
+    }
+    $nodes = node_load_multiple(array(50, 49, 48));
+    $build['nodes'] = node_view_multiple($nodes, 'teaser');
+  }
+
+  return $build;
+}

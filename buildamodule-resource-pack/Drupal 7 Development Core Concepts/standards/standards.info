@@ -1,0 +1,7 @@
+; $Id$
+name = Standards
+description = Demonstrates how to implement and check for coding standard compliance.
+package = Build a Module
+core = 7.x
+php = 5.1
+files[] = standards.module

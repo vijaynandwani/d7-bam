@@ -1,0 +1,16 @@
+<?php
+
+// Add a class to the html.tpl.php.
+function batoverrides_preprocess_html(&$variables) {
+  $variables['classes_array'][] = 'htmlclass';
+}
+
+// Add a class to node.tpl.php.
+function batoverrides_preprocess_node(&$variables) {
+  $variables['classes_array'][] = 'nodeclass';
+}
+
+// Add a class to page.tpl.php.
+function batoverrides_preprocess_page(&$variables) {
+  $variables['classes_array'][] = 'pageclass';
+}

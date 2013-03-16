@@ -1,0 +1,61 @@
+<?php
+
+include('database.php');
+
+session_start();
+
+$notices = array();
+
+// Process form submissions.
+if (isset($_REQUEST['action'])) {
+  switch ($_REQUEST['action']) {
+    
+    case 'logout':
+      session_destroy();
+      session_start();
+      $notices[] = 'You have been logged out';
+      break;
+    
+    case 'login':
+      $result = mysql_query("SELECT * FROM people WHERE username = '" . $_POST['username'] . "' AND password = '" . $_POST['password'] . "'");
+      if ($row = mysql_fetch_array($result)) {
+        $_SESSION['username'] = $row['username'];
+      }
+      if (!isset($_SESSION['username'])) {
+        $notices[] = 'Ah, sorry, either the username or password was incorrect.';
+      } else {
+        $notices[] = 'You have been logged in.';
+      }
+      break;
+    
+  }
+}
+
+// Generate output if logged in or not logged in.
+if (isset($_SESSION['username'])) {
+  $output = '
+    <p><a href="test.php?action=logout">Log out</a></p>
+    <h1>Welcome, ' . $_SESSION['username'] . '</h1>
+    <p>You are logged in, enjoy!</p>';
+} else {
+  $output = '
+  <form action="test.php" method="post">
+    <p>Username: <input type="text" name="username" /></p>
+    <p>Password: <input type="password" name="password" /></p>
+    <p><input type="submit" value="Log in" />
+    <input type="hidden" name="action" value="login" />
+  </form>';
+}
+
+// Render notices as HTML.
+$notices_output = '';
+if (count($notices) > 0) {
+  $notices_output = '
+    <div style="border:1px solid #333;background:#666;color:white;font-weight:bold;padding:5px;margin:5px;">
+      <ul><li>' . implode('</li><li>', $notices) . '</li></ul>
+    </div>';
+}
+
+print $notices_output . $output;
+
+?>

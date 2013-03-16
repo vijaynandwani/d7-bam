@@ -1,0 +1,30 @@
+(function ($) {
+  $(document).ready(function () {
+
+    // SELECTORS
+    // See http://api.jquery.com/category/selectors/ for all selectors.
+
+    var content = '';
+
+    // Using IDs.
+    content = $('h1#site-name').html();
+
+    // Using classes.
+    //content = $('a.active').html();
+
+    // Using nested elements.
+    //content = $('h1 span').html();
+
+    // Using an attribute.
+    //content = $('input[type=text]').val();
+
+    // Looking for the presence of a word.
+    //content = $('p:contains("pneum")').html();
+
+    // Chaining selectors, similar to nesting.
+    //content = $('h1').find('span').html();
+
+    alert(content);
+
+  });
+})(jQuery);

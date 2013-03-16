@@ -1,0 +1,89 @@
+<?php
+// $Id$
+/**
+ * @file
+ * Install file for New Stuff module.
+ */
+
+
+/**
+ * Implements hook_install().
+ */
+function newstuff_install() {
+  $t = get_t();
+
+  // Define the node type.
+  $newstuff = array(
+    'type' => 'newstuff',
+    'name' => $t('New Stuff'),
+    'base' => 'node_content',
+    'description' => $t('This is an example node type.'),
+    'body_label' => $t('Content')
+  );
+
+  // Set defaults.
+  $content_type = node_type_set_defaults($newstuff);
+  
+  // Add the body field (not part of default).
+  node_add_body_field($content_type);
+
+  // Save the content type.
+  node_type_save($content_type);
+
+  // Create fields.
+  foreach (_newstuff_installed_fields() as $field) {
+    field_create_field($field);
+  }
+
+  // Create instances of fields.
+  foreach (_newstuff_installed_instances() as $instance) {
+    $instance['entity_type'] = 'node';
+    $instance['bundle'] = $newstuff['type'];
+    field_create_instance($instance);
+  }
+}
+
+
+/**
+ * Return an array of fields, to be used during the install and uninstall process.
+ */
+function _newstuff_installed_fields() {
+  return array(
+    'newstuff_example_field' => array(
+      'field_name'  => 'newstuff_example_field',
+      'type'        => 'text',
+      'cardinality' => 1,
+    ),
+    'newstuff_image' => array(
+      'field_name' => 'newstuff_image',
+      'type'       => 'image',
+      'cardinality' => 1,
+    ),
+  );
+}
+
+
+/**
+ * Return an array of instances, to be used during the install and uninstall process.
+ */
+function _newstuff_installed_instances() {
+  $t = get_t();
+  return array(
+    'newstuff_example_field' => array(
+      'field_name'  => 'newstuff_example_field',
+      'label' => $t('Example text field'),
+      'type'        => 'text',
+      'widget'      => array(
+        'type'    => 'text_textfield',
+      ),
+    ),
+    'newstuff_image' => array(
+      'field_name'  => 'newstuff_image',
+      'label'       => $t('Upload an image:'),
+      'required'    => FALSE,
+      'widget' => array(
+        'type'    => 'image_image',
+      ),
+    ),
+  );
+}

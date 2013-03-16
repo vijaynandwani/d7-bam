@@ -1,0 +1,16 @@
+<?php
+
+// Change text of 'Read more' links.
+function batoverrides_preprocess_link(&$variables) {
+  if (strpos($variables['text'], 'Read more') !== FALSE) {
+    $variables['text'] = str_replace('Read more', 'Show me!', $variables['text']);
+  }
+}
+
+// Change every image to a Druplicon if the user is anonymous.
+function batoverrides_preprocess_image(&$variables) {
+  global $user;
+  if ($user->uid == 0) {
+    $variables['path'] = 'misc/druplicon.png';
+  }
+}

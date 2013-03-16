@@ -1,0 +1,7 @@
+// Wraps a function around the code and supplies $ as a local variable.
+(function ($) {
+  $(document).ready(function () {
+    var text = $('h1').text();
+    alert(text);
+  });
+})(jQuery);

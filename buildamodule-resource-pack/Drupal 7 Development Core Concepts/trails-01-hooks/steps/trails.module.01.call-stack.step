@@ -1,0 +1,49 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ * Stores and displays a trail of previously visited pages.
+ *
+ * Step 1: Adding hook scaffolding to follow callback stack. This is ideally tracked
+ * in an IDE with debugging like Eclipse or Komodo IDE, but you can also use the
+ * following:
+ *
+ * - Just PHP: Add print_r(debug_backtrace()); and then view source code to see
+ *   it nicely formatted.
+ * - Install the devel module (http://drupal.org/project/devel) and use
+ *   ddebug_backtrace();. Click orange box to expand the array.
+ * 
+ */
+
+
+/**
+ * Implements hook_init().
+ */
+function trails_init() {
+  return;
+}
+
+
+/**
+ * Implements hook_permission().
+ */
+function trails_permission() {
+  return;
+}
+
+
+/**
+ * Implements hook_menu().
+ */
+function trails_menu() {
+  return;
+}
+
+
+/**
+ * Implements hook_cron().
+ */
+function trails_cron() {
+  return;
+}
